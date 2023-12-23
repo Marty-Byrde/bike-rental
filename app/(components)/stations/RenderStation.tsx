@@ -17,7 +17,7 @@ export default function RenderStation({ station: initialStation, editable, isPen
   return (
     <form className='rounded-lg bg-neutral-200/50 px-4 py-2 dark:bg-neutral-700/40'>
       <h2 className='flex gap-2 border-b-[2px] border-gray-400 pb-1 text-lg font-semibold dark:border-gray-500 2sm:mb-4'>
-        <DynamicText isPending={isPending} content={station.name} skHeight='h-4' skContainerClassName='py-1' className='flex-1' />
+        <DynamicText isPending={isPending} content={station.name} skHeight='h-4' skContainerClassName='py-1 flex-1' skBackground='bg-gray-300' className='flex-1' />
         <Rating reviews={station.reviews} isPending={isPending} />
       </h2>
 

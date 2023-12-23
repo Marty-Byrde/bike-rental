@@ -36,7 +36,8 @@ export default function ColorModeSwitcher({ className }: { className?: string })
   }
 
   useEffect(() => {
-    const preference = parseCookies()?.colorMode ?? window?.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    const preference = (parseCookies()?.colorMode ?? (window?.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) as 'light' | 'dark'
+
     setMode(preference) //? Set the initial color-preference
     if (!parseCookies()?.colorMode) updateColorMode(preference, cookiePermission())
 

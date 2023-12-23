@@ -13,9 +13,9 @@ export default function InputGroup(props: InputGroupProps) {
   if (props.isPending) {
     return (
       <div className='flex items-center gap-2'>
-        <DynamicText content='' skWidth='w-16' isPending />
+        <DynamicText content='' skWidth='w-16' isPending skBackground='bg-gray-300' />
         <div className='flex flex-1 rounded-md dark:bg-neutral-600/60'>
-          <DynamicText content='' skWidth='w-full' skContainerClassName='flex-1 py-2 px-2' isPending />
+          <DynamicText content='' skWidth='w-full' skContainerClassName='flex-1 py-2 px-2' skBackground='bg-gray-300' isPending />
         </div>
       </div>
     )

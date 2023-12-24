@@ -38,6 +38,11 @@ export default async function SideBar() {
           name: 'Manage Stations',
           href: '/management/stations',
         },
+        {
+          icon: 'AdjustmentsVerticalIcon',
+          name: 'Manage Bikes',
+          href: '/management/bikes',
+        },
       ],
     },
   ]

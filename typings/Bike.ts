@@ -6,8 +6,8 @@ export default interface BikeModel {
   description: string
   wheel_size: number
   manufacturer: string
-  brakeType: BikeBreakType
-  category: BikeCategory
+  brakeType: BikeBreakType['name']
+  category: BikeCategory['name']
   reviews: Review[]
 }
 

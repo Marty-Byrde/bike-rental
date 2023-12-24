@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
-import { getBikes } from '@/lib/bikes/BikesDAO'
+import { getBikeModels } from '@/lib/bikes/BikeModelsDAO'
 
 export async function GET(req: Request) {
-  const bikes = await getBikes()
+  const bikes = await getBikeModels()
   return NextResponse.json(bikes)
 }

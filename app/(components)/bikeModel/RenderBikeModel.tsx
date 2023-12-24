@@ -7,29 +7,29 @@ import { DynamicText } from '@/app/(components)/Shared/Responsive/DynamicText'
 import Rating from '@/app/(components)/Shared/Rating'
 import structureClasses from '@/lib/Shared/structureClasses'
 import InputGroup from '@/app/(components)/Shared/Forms/InputGroup'
-import UpdateBikeAction from '@/actions/bikes/UpdateBikeAction'
-import DeleteBikeAction from '@/actions/bikes/DeleteBikeAction'
+import UpdateBikeModelAction from '@/actions/bikes/UpdateBikeModelAction'
+import DeleteBikeModelAction from '@/actions/bikes/DeleteBikeModelAction'
 
-export default function RenderBike({ bike: initialBike, isPending, editable }: { bike: WithId<BikeModel>; isPending?: boolean; editable?: boolean }) {
-  const [bike, setBike] = useState<WithId<BikeModel>>(initialBike)
-  const { onChange } = useForm(bike, setBike)
+export default function RenderBikeModel({ bikeModel: initialBikeModel, isPending, editable }: { bikeModel: WithId<BikeModel>; isPending?: boolean; editable?: boolean }) {
+  const [bikeModel, setBikeModel] = useState<WithId<BikeModel>>(initialBikeModel)
+  const { onChange } = useForm(bikeModel, setBikeModel)
 
   return (
     <form className='rounded-lg bg-neutral-200/50 px-4 py-2 dark:bg-neutral-700/40'>
       <h2 className='flex gap-2 border-b-[2px] border-gray-400 pb-1 text-lg font-semibold dark:border-gray-500 2sm:mb-4'>
-        <DynamicText isPending={isPending} content={bike.name} skHeight='h-4' skContainerClassName='py-1 flex-1' skBackground='bg-gray-300' className='flex-1' />
-        <Rating reviews={bike.reviews} isPending={isPending} />
+        <DynamicText isPending={isPending} content={bikeModel.name} skHeight='h-4' skContainerClassName='py-1 flex-1' skBackground='bg-gray-300' className='flex-1' />
+        <Rating reviews={bikeModel.reviews} isPending={isPending} />
       </h2>
 
       <div className={structureClasses('mb-2 flex flex-col gap-4 2sm:gap-2')}>
-        <InputGroup name='_id' hidden className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200' defaultValue={bike._id.toString()} readOnly />
+        <InputGroup name='_id' hidden className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200' defaultValue={bikeModel._id.toString()} readOnly />
         <InputGroup
           isPending={isPending}
           name='name'
           onChange={onChange}
           readOnly={!editable}
           className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={bike.name}
+          defaultValue={bikeModel.name}
         />
         <InputGroup
           isPending={isPending}
@@ -37,7 +37,7 @@ export default function RenderBike({ bike: initialBike, isPending, editable }: {
           onChange={onChange}
           readOnly={!editable}
           className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={bike.description}
+          defaultValue={bikeModel.description}
         />
         <InputGroup
           isPending={isPending}
@@ -46,7 +46,7 @@ export default function RenderBike({ bike: initialBike, isPending, editable }: {
           onChange={onChange}
           readOnly={!editable}
           className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={bike.wheel_size}
+          defaultValue={bikeModel.wheel_size}
         />
         <InputGroup
           isPending={isPending}
@@ -54,7 +54,7 @@ export default function RenderBike({ bike: initialBike, isPending, editable }: {
           onChange={onChange}
           readOnly={!editable}
           className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={bike.manufacturer}
+          defaultValue={bikeModel.manufacturer}
         />
 
         <InputGroup
@@ -63,7 +63,7 @@ export default function RenderBike({ bike: initialBike, isPending, editable }: {
           onChange={onChange}
           readOnly={!editable}
           className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={bike.brakeType}
+          defaultValue={bikeModel.brakeType}
         />
 
         <InputGroup
@@ -72,11 +72,11 @@ export default function RenderBike({ bike: initialBike, isPending, editable }: {
           onChange={onChange}
           readOnly={!editable}
           className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={bike.category}
+          defaultValue={bikeModel.category}
         />
       </div>
 
-      <ActionButtons visible={editable} isPending={isPending} initialBike={initialBike} bike={bike} />
+      <ActionButtons visible={editable} isPending={isPending} initialBike={initialBikeModel} bike={bikeModel} />
     </form>
   )
 }
@@ -100,10 +100,12 @@ function ActionButtons({ isPending, visible, initialBike, bike }: { isPending?: 
 
   return (
     <div className='mt-4 flex justify-end gap-2'>
-      <button className='rounded-md bg-blue-800/50 px-2 py-1 uppercase tracking-wide text-gray-100 dark:bg-blue-400/50 dark:text-gray-200' formAction={() => UpdateBikeAction(initialBike._id, bike)}>
+      <button
+        className='rounded-md bg-blue-800/50 px-2 py-1 uppercase tracking-wide text-gray-100 dark:bg-blue-400/50 dark:text-gray-200'
+        formAction={() => UpdateBikeModelAction(initialBike._id, bike)}>
         Update
       </button>
-      <button className='rounded-md bg-red-800/50 px-2 py-1 uppercase tracking-wide text-gray-100 dark:bg-red-400/50 dark:text-gray-200' formAction={() => DeleteBikeAction(bike)}>
+      <button className='rounded-md bg-red-800/50 px-2 py-1 uppercase tracking-wide text-gray-100 dark:bg-red-400/50 dark:text-gray-200' formAction={() => DeleteBikeModelAction(bike)}>
         Delete
       </button>
     </div>

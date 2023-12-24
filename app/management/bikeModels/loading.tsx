@@ -1,8 +1,8 @@
 import { ObjectId, WithId } from 'mongodb'
 import { BikeModel } from '@/typings/Bike'
-import RenderBike from '@/app/(components)/bikes/RenderBike'
+import RenderBikeModel from '@/app/(components)/bikeModel/RenderBikeModel'
 
-export default async function LoadingManagementStations() {
+export default async function LoadingManagementBikeModels() {
   const bikes = Array.from({ length: 6 }).map(
     (e): WithId<BikeModel> => ({
       // @ts-ignore
@@ -23,7 +23,7 @@ export default async function LoadingManagementStations() {
       <h1 className='mb-8 text-center text-3xl font-semibold lg:text-left'>Available Bikes</h1>
       <div className='grid grid-cols-1 gap-4 px-2 xl:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-3'>
         {bikes.map((b) => (
-          <RenderBike key={Math.random().toString()} bike={b} isPending />
+          <RenderBikeModel key={Math.random().toString()} bikeModel={b} isPending editable />
         ))}
       </div>
     </>

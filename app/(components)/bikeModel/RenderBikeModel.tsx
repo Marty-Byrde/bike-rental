@@ -1,5 +1,5 @@
 'use client'
-import { BikeModel } from '@/typings/Bike'
+import { BikeModel, getDummyBikeBreakType, getDummyBikeCategories } from '@/typings/Bike'
 import { useState } from 'react'
 import { WithId } from 'mongodb'
 import useForm from '@/hooks/useForm'
@@ -9,13 +9,14 @@ import structureClasses from '@/lib/Shared/structureClasses'
 import InputGroup from '@/app/(components)/Shared/Forms/InputGroup'
 import UpdateBikeModelAction from '@/actions/bikes/UpdateBikeModelAction'
 import DeleteBikeModelAction from '@/actions/bikes/DeleteBikeModelAction'
+import { SelectComponent } from '@/app/(components)/Shared/Select'
 
 export default function RenderBikeModel({ bikeModel: initialBikeModel, isPending, editable }: { bikeModel: WithId<BikeModel>; isPending?: boolean; editable?: boolean }) {
   const [bikeModel, setBikeModel] = useState<WithId<BikeModel>>(initialBikeModel)
   const { onChange } = useForm(bikeModel, setBikeModel)
 
   return (
-    <form className='rounded-lg bg-neutral-200/50 px-4 py-2 dark:bg-neutral-700/40'>
+    <div className='rounded-lg bg-neutral-200/50 px-4 py-2 dark:bg-neutral-700/40'>
       <h2 className='flex gap-2 border-b-[2px] border-gray-400 pb-1 text-lg font-semibold dark:border-gray-500 2sm:mb-4'>
         <DynamicText isPending={isPending} content={bikeModel.name} skHeight='h-4' skContainerClassName='py-1 flex-1' skBackground='bg-gray-300' className='flex-1' />
         <Rating reviews={bikeModel.reviews} isPending={isPending} />
@@ -57,27 +58,57 @@ export default function RenderBikeModel({ bikeModel: initialBikeModel, isPending
           defaultValue={bikeModel.manufacturer}
         />
 
-        <InputGroup
-          isPending={isPending}
-          name='brakeType'
-          onChange={onChange}
-          readOnly={!editable}
-          className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={bikeModel.brakeType}
-        />
+        <div className='flex flex-col gap-2 2sm:flex-row 2sm:items-center'>
+          <span>Break Type:</span>
+          <SelectComponent
+            readOnly={!editable}
+            className='flex-1'
+            preSelected={[bikeModel.brakeType]}
+            onSelect={(elements) =>
+              setBikeModel((model) => {
+                // @ts-ignore
+                model.brakeType = elements.join('').toString()
+                return model
+              })
+            }>
+            <SelectComponent.Box className='text-md' placeHolder='Select your Bikemodel-BreakType' />
 
-        <InputGroup
-          isPending={isPending}
-          name='category'
-          onChange={onChange}
-          readOnly={!editable}
-          className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={bikeModel.category}
-        />
+            <SelectComponent.Modal>
+              {getDummyBikeBreakType().map((bt) => (
+                <SelectComponent.ModalOptions className='text-sm' key={bt.toString()} value={bt} />
+              ))}
+            </SelectComponent.Modal>
+          </SelectComponent>
+        </div>
+
+        <div className='flex flex-col gap-2 2sm:flex-row 2sm:items-center'>
+          <span>Category:</span>
+          <SelectComponent
+            readOnly={!editable}
+            className='flex-1'
+            preSelected={[bikeModel.category]}
+            onSelect={(elements) =>
+              setBikeModel((model) => {
+                // @ts-ignore
+                model.category = elements.join('').toString()
+                return model
+              })
+            }>
+            <SelectComponent.Box className='text-md' placeHolder='Select your Bikemodel-Category' />
+
+            <SelectComponent.Modal>
+              {getDummyBikeCategories().map((cat) => (
+                <SelectComponent.ModalOptions className='text-sm' key={cat.toString()} value={cat} />
+              ))}
+            </SelectComponent.Modal>
+          </SelectComponent>
+        </div>
       </div>
 
-      <ActionButtons visible={editable} isPending={isPending} initialBike={initialBikeModel} bike={bikeModel} />
-    </form>
+      <form>
+        <ActionButtons visible={editable} isPending={isPending} initialBike={initialBikeModel} bike={bikeModel} />
+      </form>
+    </div>
   )
 }
 

@@ -1,7 +1,11 @@
 import Review from '@/typings/Review'
 
-export default interface BikeModel {
+export interface Bike {
   id: number
+  model: BikeModel
+}
+
+export interface BikeModel {
   name: string
   description: string
   wheel_size: number
@@ -18,7 +22,7 @@ export interface BikeBreakType {
 export interface ParkingPlace {
   id: number
   allowedCategories: Array<BikeCategory['name']>
-  bike?: BikeModel
+  bike?: Bike
 }
 
 export interface BikeCategory {

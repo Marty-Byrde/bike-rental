@@ -1,5 +1,5 @@
 'use client'
-import BikeModel from '@/typings/Bike'
+import { BikeModel } from '@/typings/Bike'
 import { useState } from 'react'
 import { WithId } from 'mongodb'
 import useForm from '@/hooks/useForm'

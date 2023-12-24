@@ -1,6 +1,6 @@
 import { getCollection } from '@/lib/Shared/Database'
 import { ObjectId, WithId } from 'mongodb'
-import BikeModel from '@/typings/Bike'
+import { BikeModel } from '@/typings/Bike'
 
 const { COLLECTION_BIKES } = process.env
 if (!COLLECTION_BIKES) throw new Error('Missing Bike Collection Name, check .env variables.')

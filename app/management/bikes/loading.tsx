@@ -1,5 +1,5 @@
 import { ObjectId, WithId } from 'mongodb'
-import BikeModel from '@/typings/Bike'
+import { BikeModel } from '@/typings/Bike'
 import RenderBike from '@/app/(components)/bikes/RenderBike'
 
 export default async function LoadingManagementStations() {

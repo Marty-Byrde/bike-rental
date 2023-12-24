@@ -1,13 +1,17 @@
 import Review from '@/typings/Review'
 
-export default interface BikeModel {
+export interface Bike {
   id: number
+  model: BikeModel
+}
+
+export interface BikeModel {
   name: string
   description: string
   wheel_size: number
   manufacturer: string
-  brakeType: BikeBreakType
-  category: BikeCategory
+  brakeType: BikeBreakType['name']
+  category: BikeCategory['name']
   reviews: Review[]
 }
 
@@ -15,12 +19,20 @@ export interface BikeBreakType {
   name: 'Disc' | 'Frame'
 }
 
+export function getDummyBikeBreakType(): Array<BikeBreakType['name']> {
+  return ['Disc', 'Frame']
+}
+
 export interface ParkingPlace {
   id: number
   allowedCategories: Array<BikeCategory['name']>
-  bike?: BikeModel
+  bike?: Bike
 }
 
 export interface BikeCategory {
   name: 'Electric' | 'Mountain' | 'City' | 'Children'
+}
+
+export function getDummyBikeCategories(): Array<BikeCategory['name']> {
+  return ['Electric', 'Mountain', 'City', 'Children']
 }

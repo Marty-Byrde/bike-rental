@@ -70,7 +70,7 @@ export function SelectComponent({
 }
 
 // eslint-disable-next-line react/display-name
-SelectComponent.Box = ({ placeHolder, className }: { className?: string; placeHolder?: string }) => {
+SelectComponent.Box = ({ placeHolder, className, dynamicTextClassName }: { dynamicTextClassName?: string; className?: string; placeHolder?: string }) => {
   // @ts-ignore
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { setOpen, selection, isPending }: SelectComponentContextProps = useContext(SelectComponentContext)
@@ -83,7 +83,12 @@ SelectComponent.Box = ({ placeHolder, className }: { className?: string; placeHo
         selection?.length === 0 ? 'text-gray-500 dark:text-gray-400' : '',
         className,
       )}>
-      <DynamicText content={selection?.length > 0 ? selection?.join(', ') : placeHolder} className='block flex-1 overflow-x-hidden truncate pr-6' skContainerClassName='flex-1' isPending={isPending} />
+      <DynamicText
+        content={selection?.length > 0 ? selection?.join(', ') : placeHolder}
+        className={twMerge('block flex-1 overflow-x-hidden truncate pr-6', dynamicTextClassName)}
+        skContainerClassName='flex-1'
+        isPending={isPending}
+      />
 
       <span className='pointer-events-none inset-y-0 flex items-center pr-2'>
         <ChevronUpDownIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />

@@ -25,7 +25,7 @@ export function SelectComponent({
   readOnly,
   multiSelect,
 }: {
-  onSelect: (elements: Array<string | number>) => void
+  onSelect: (elements: Array<string | number>, resetSelect: (setToPreselect?: boolean) => void) => void
   preSelected?: Array<string | number>
   children: React.JSX.Element | React.JSX.Element[]
   className?: string
@@ -52,7 +52,10 @@ export function SelectComponent({
       setInitialRender(false)
       return
     }
-    onSelect(selection)
+    onSelect(selection, (setToPreselect) => {
+      setInitialRender(true) //* so that there is no endless loop because of state-change.
+      setSelection(setToPreselect ? preSelected ?? [] : [])
+    })
   }, [selection])
 
   return (

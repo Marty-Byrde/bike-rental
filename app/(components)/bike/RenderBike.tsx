@@ -71,10 +71,10 @@ export default function RenderBike({
               const selected = stations.find((s) => s.name === elements.at(0))!
 
               //? check whether parking places are free
-              const freePlace = selected.address.parkingPlaces.find((p) => !p.bike)
+              const freePlace = selected.address.parkingPlaces.find((p) => !p.bike && p.allowedCategories?.find((cat) => cat === bike.model.category))
               if (!freePlace) {
                 resetSelect(true)
-                alert('No free parking places...')
+                alert('No free parking places that are equiped for the bikes-model-category...')
                 return
               }
 

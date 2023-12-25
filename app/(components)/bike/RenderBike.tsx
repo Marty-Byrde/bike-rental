@@ -39,6 +39,7 @@ export default function RenderBike({
         <div className='flex flex-col gap-2 2sm:flex-row 2sm:items-center'>
           <DynamicText content='Bike Model:' isPending={isPending} skWidth='w-24' />
           <SelectComponent
+            isPending={isPending}
             readOnly={!editable}
             className='flex-1'
             preSelected={[bike.model.name]}
@@ -62,6 +63,7 @@ export default function RenderBike({
         <div className='flex flex-col gap-2 2sm:flex-row 2sm:items-center'>
           <DynamicText content='Station:' isPending={isPending} skWidth='w-24' />
           <SelectComponent
+            isPending={isPending}
             readOnly={!editable}
             className='flex-1'
             preSelected={[stations.find((s) => s.address.parkingPlaces.find((pc) => pc.bike?._id.toString() === bike._id.toString()))?.name ?? '']}

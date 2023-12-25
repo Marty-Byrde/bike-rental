@@ -7,8 +7,8 @@ import { DynamicText } from '@/app/(components)/Shared/Responsive/DynamicText'
 import Rating from '@/app/(components)/Shared/Rating'
 import structureClasses from '@/lib/Shared/structureClasses'
 import InputGroup from '@/app/(components)/Shared/Forms/InputGroup'
-import UpdateBikeModelAction from '@/actions/bikes/UpdateBikeModelAction'
-import DeleteBikeModelAction from '@/actions/bikes/DeleteBikeModelAction'
+import UpdateBikeModelAction from '@/actions/bikeModels/UpdateBikeModelAction'
+import DeleteBikeModelAction from '@/actions/bikeModels/DeleteBikeModelAction'
 import { SelectComponent } from '@/app/(components)/Shared/Select'
 
 export default function RenderBikeModel({ bikeModel: initialBikeModel, isPending, editable }: { bikeModel: WithId<BikeModel>; isPending?: boolean; editable?: boolean }) {

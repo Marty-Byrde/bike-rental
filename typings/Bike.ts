@@ -1,8 +1,9 @@
 import Review from '@/typings/Review'
+import { WithId } from 'mongodb'
 
 export interface Bike {
-  id: number
-  model: BikeModel
+  _id: string
+  model: WithId<BikeModel>
 }
 
 export interface BikeModel {

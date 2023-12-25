@@ -10,6 +10,7 @@ import UpdateStationAction from '@/actions/stations/UpdateStationAction'
 import { DynamicText } from '@/app/(components)/Shared/Responsive/DynamicText'
 import Rating from '@/app/(components)/Shared/Rating'
 import ReactState from '@/typings/ReactState'
+import RenderParkingPlaces from '@/app/(components)/stations/RenderParkingPlaces'
 
 interface RenderStationContextProps {
   initialStation: WithId<Station>
@@ -66,6 +67,8 @@ export default function RenderStation({ station: initialStation, editable, isPen
             className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
             defaultValue={station.address.coordinates.join(', ')}
           />
+
+          <RenderParkingPlaces />
         </div>
 
         <form>

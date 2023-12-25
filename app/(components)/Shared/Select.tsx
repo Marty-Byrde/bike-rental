@@ -6,6 +6,7 @@ import ReactState from '@/typings/ReactState'
 import { CheckIcon } from '@heroicons/react/24/solid'
 import structureClasses from '@/lib/Shared/structureClasses'
 import { twMerge } from 'tailwind-merge'
+import { DynamicText } from '@/app/(components)/Shared/Responsive/DynamicText'
 
 const SelectComponentContext = createContext({})
 
@@ -15,6 +16,7 @@ interface SelectComponentContextProps {
   selection: ReactState<(string | number)[]>['state']
   setSelection: ReactState<(string | number)[]>['setState']
   readOnly?: boolean
+  isPending?: boolean
 }
 
 export function SelectComponent({
@@ -24,6 +26,7 @@ export function SelectComponent({
   className,
   readOnly,
   multiSelect,
+  isPending,
 }: {
   onSelect: (elements: Array<string | number>, resetSelect: (setToPreselect?: boolean) => void) => void
   preSelected?: Array<string | number>
@@ -31,6 +34,7 @@ export function SelectComponent({
   className?: string
   readOnly?: boolean
   multiSelect?: boolean
+  isPending?: boolean
 }) {
   const [selection, setSelection] = useState<(string | number)[]>(preSelected ?? [])
   const [open, setOpen] = useState<boolean>(false)
@@ -60,7 +64,7 @@ export function SelectComponent({
 
   return (
     <div className={twMerge('', className)}>
-      <SelectComponentContext.Provider value={{ selection, setSelection, open, setOpen, readOnly, multiSelect }}>{children}</SelectComponentContext.Provider>
+      <SelectComponentContext.Provider value={{ selection, setSelection, open, setOpen, readOnly, multiSelect, isPending }}>{children}</SelectComponentContext.Provider>
     </div>
   )
 }
@@ -69,17 +73,17 @@ export function SelectComponent({
 SelectComponent.Box = ({ placeHolder, className }: { className?: string; placeHolder?: string }) => {
   // @ts-ignore
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { setOpen, selection }: SelectComponentContextProps = useContext(SelectComponentContext)
+  const { setOpen, selection, isPending }: SelectComponentContextProps = useContext(SelectComponentContext)
 
   return (
     <button
-      onClick={() => setOpen((prev) => !prev)}
+      onClick={() => (isPending ? null : setOpen((prev) => !prev))}
       className={twMerge(
         'flex h-8 w-full cursor-default items-center overflow-x-hidden rounded-md bg-white py-1.5 pl-3 text-left text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-neutral-600/60 dark:text-gray-200 dark:ring-gray-600 dark:focus:ring-blue-600/60 sm:leading-6',
         selection?.length === 0 ? 'text-gray-500 dark:text-gray-400' : '',
         className,
       )}>
-      <span className='block flex-1 overflow-x-hidden truncate pr-6 '>{selection?.length > 0 ? selection?.join(', ') : placeHolder}</span>
+      <DynamicText content={selection?.length > 0 ? selection?.join(', ') : placeHolder} className='block flex-1 overflow-x-hidden truncate pr-6' skContainerClassName='flex-1' isPending={isPending} />
 
       <span className='pointer-events-none inset-y-0 flex items-center pr-2'>
         <ChevronUpDownIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />

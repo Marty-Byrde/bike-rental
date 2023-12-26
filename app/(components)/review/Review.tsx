@@ -6,8 +6,11 @@ import Image from 'next/image'
 import StarEmpty from '@/public/starWhite.svg'
 import StarFull from '@/public/starWhiteFull.svg'
 import SendButton from '@/public/sendButton.svg'
+import { useSession } from 'next-auth/react'
 
 export default function Review() {
+  const { data } = useSession()
+
   const starCount = 5
   const [selectedStar, setSelectedStar] = useState<number>(-1)
   const [hoveredStar, setHoveredStar] = useState<number>(-1)
@@ -39,11 +42,11 @@ export default function Review() {
     <div className='mx-auto max-w-md overflow-hidden rounded-lg bg-neutral-800 shadow-xl shadow-red-200'>
       <div className='flex items-center justify-between p-4'>
         {/* Profilbild */}
-        <img className='h-16 w-16 rounded-full' src='https://via.placeholder.com/64x64' alt='Profilbild von Esther Howard' />
+        <Image className='h-16 w-16 rounded-full' width={256} height={256} src={data?.user?.image ?? StarEmpty} alt='Profilbild von Esther Howard' />
 
         {/* Name, Sterne und Bewertung */}
         <div className='ml-4 flex flex-grow flex-col'>
-          <span className='mb-2 text-base font-normal text-white'>Max Mustermann</span>
+          <span className='mb-2 text-base font-normal text-white'>{data?.user?.name ?? 'Max Mustermann'}</span>
           <div className='flex items-center'>
             {/* Sterne */}
             <div className='flex gap-1'>{stars}</div>

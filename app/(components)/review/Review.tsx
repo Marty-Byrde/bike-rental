@@ -29,7 +29,6 @@ export default function Review() {
   }
   const handleSendButtonClick = () => {
     setIsClicked(true)
-    console.log('Senden-Button geklickt mit Bewertung: ', selectedStar + 1)
   }
   //logik Stärne zählen und hovern
   const stars = Array.from({ length: starCount }, (_, index) => (
@@ -39,7 +38,7 @@ export default function Review() {
   ))
 
   return (
-    <div className='mx-auto max-w-md overflow-hidden rounded-lg bg-neutral-800 shadow-xl shadow-red-200'>
+    <div className='mx-auto max-w-md overflow-hidden rounded-lg bg-neutral-800 shadow-md ring-1 ring-gray-300 dark:bg-neutral-800 dark:shadow-neutral-600 dark:ring-gray-600'>
       <div className='flex items-center justify-between p-4'>
         {/* Profilbild */}
         <Image className='h-16 w-16 rounded-full' width={256} height={256} src={data?.user?.image ?? StarEmpty} alt='Profilbild von Esther Howard' />
@@ -51,7 +50,7 @@ export default function Review() {
             {/* Sterne */}
             <div className='flex gap-1'>{stars}</div>
             {/* Ausgewählte Sterne-Anzahl */}
-            {selectedStar !== null && <span className='ml-10 text-base font-normal text-white'>{selectedStar + 1}</span>}
+            {selectedStar !== null && <span className='ml-10 text-base font-normal text-white dark:text-gray-100'>{selectedStar + 1}</span>}
           </div>
         </div>
 
@@ -65,9 +64,9 @@ export default function Review() {
       </div>
 
       {/* Kommentarbereich */}
-      <div className='border-t border-black bg-white p-4 text-black'>
+      <div className='border-t border-black bg-white p-4 text-black dark:bg-neutral-700'>
         <textarea
-          className='w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+          className='w-full rounded-md border border-gray-300 bg-transparent p-2 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-400 dark:text-gray-200 dark:placeholder-gray-400'
           placeholder='Schreibe einen Kommentar...'
           rows={4}
           disabled={isClicked}></textarea>

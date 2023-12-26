@@ -1,7 +1,7 @@
 'use client'
 import { WithId } from 'mongodb'
 import Station from '@/typings/Station'
-import { useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import structureClasses from '@/lib/Shared/structureClasses'
 import DeleteStationAction from '@/actions/stations/DeleteStationAction'
 import InputGroup from '@/app/(components)/Shared/Forms/InputGroup'
@@ -9,66 +9,79 @@ import useForm from '@/hooks/useForm'
 import UpdateStationAction from '@/actions/stations/UpdateStationAction'
 import { DynamicText } from '@/app/(components)/Shared/Responsive/DynamicText'
 import Rating from '@/app/(components)/Shared/Rating'
+import ReactState from '@/typings/ReactState'
+import RenderParkingPlaces from '@/app/(components)/stations/RenderParkingPlaces'
+
+interface RenderStationContextProps {
+  initialStation: WithId<Station>
+  station: ReactState<WithId<Station>>['state']
+  setStation: ReactState<WithId<Station>>['setState']
+  editable: boolean
+  isPending: boolean
+}
+
+// @ts-ignore
+const defaultContext: RenderStationContextProps = {}
+
+export const RenderStationContext = createContext(defaultContext)
 
 export default function RenderStation({ station: initialStation, editable, isPending }: { station: WithId<Station>; editable?: boolean; isPending?: boolean }) {
   const [station, setStation] = useState<WithId<Station>>(initialStation)
   const { onChange } = useForm(station, setStation)
 
   return (
-    <form className='rounded-lg bg-neutral-200/50 px-4 py-2 dark:bg-neutral-700/40'>
-      <h2 className='flex gap-2 border-b-[2px] border-gray-400 pb-1 text-lg font-semibold dark:border-gray-500 2sm:mb-4'>
-        <DynamicText isPending={isPending} content={station.name} skHeight='h-4' skContainerClassName='py-1 flex-1' skBackground='bg-gray-300' className='flex-1' />
-        <Rating reviews={station.reviews} isPending={isPending} />
-      </h2>
+    <RenderStationContext.Provider value={{ initialStation, station, setStation, editable: editable ?? false, isPending: isPending ?? false }}>
+      <div className='rounded-lg bg-neutral-200/50 px-4 py-2 dark:bg-neutral-700/40'>
+        <h2 className='flex gap-2 border-b-[2px] border-gray-400 pb-1 text-lg font-semibold dark:border-gray-500 2sm:mb-4'>
+          <DynamicText isPending={isPending} content={station.name} skHeight='h-4' skContainerClassName='py-1 flex-1' skBackground='bg-gray-300' className='flex-1' />
+          <Rating reviews={station.reviews} isPending={isPending} />
+        </h2>
 
-      <div className={structureClasses('mb-2 flex flex-col gap-4 2sm:gap-2')}>
-        <InputGroup name='_id' hidden className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200' defaultValue={station._id.toString()} readOnly />
-        <InputGroup
-          isPending={isPending}
-          name='name'
-          onChange={onChange}
-          readOnly={!editable}
-          className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={station.name}
-        />
-        <InputGroup
-          isPending={isPending}
-          name='city'
-          data-path={['address']}
-          data-result='a'
-          onChange={onChange}
-          readOnly={!editable}
-          className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={station.address.city}
-        />
-        <InputGroup
-          isPending={isPending}
-          name='coordinates'
-          data-path={['address']}
-          data-result='array<number>'
-          onChange={onChange}
-          readOnly={!editable}
-          className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={station.address.coordinates.join(', ')}
-        />
-        <InputGroup
-          isPending={isPending}
-          name='allowedCategories'
-          data-path={['address']}
-          data-result='array<string>'
-          onChange={onChange}
-          readOnly={true}
-          className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={station.address.parkingPlaces.map((p) => p.allowedCategories.join(', ')).join('; ')}
-        />
+        <div className={structureClasses('text-md mb-2 flex flex-col gap-4 2sm:gap-2')}>
+          <InputGroup name='_id' hidden className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200' defaultValue={station._id.toString()} readOnly />
+          <InputGroup
+            isPending={isPending}
+            name='name'
+            onChange={onChange}
+            readOnly={!editable}
+            className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
+            defaultValue={station.name}
+          />
+          <InputGroup
+            isPending={isPending}
+            name='city'
+            data-path={['address']}
+            data-result='a'
+            onChange={onChange}
+            readOnly={!editable}
+            className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
+            defaultValue={station.address.city}
+          />
+          <InputGroup
+            isPending={isPending}
+            name='coordinates'
+            data-path={['address']}
+            data-result='array<number>'
+            onChange={onChange}
+            readOnly={!editable}
+            className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
+            defaultValue={station.address.coordinates.join(', ')}
+          />
+
+          <RenderParkingPlaces />
+        </div>
+
+        <form>
+          <ActionButtons />
+        </form>
       </div>
-
-      <ActionButtons visible={editable} isPending={isPending} initialStation={initialStation} station={station} />
-    </form>
+    </RenderStationContext.Provider>
   )
 }
 
-function ActionButtons({ isPending, visible, initialStation, station }: { isPending?: boolean; visible?: boolean; initialStation: WithId<Station>; station: WithId<Station> }) {
+function ActionButtons() {
+  const { initialStation, station, isPending, editable: visible } = useContext(RenderStationContext)
+
   if (!visible) return null
 
   if (isPending) {

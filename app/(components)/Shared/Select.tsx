@@ -85,7 +85,7 @@ SelectComponent.Box = ({ placeHolder, className, dynamicTextClassName }: { dynam
       )}>
       <DynamicText
         content={selection?.length > 0 ? selection?.join(', ') : placeHolder}
-        className={twMerge('block flex-1 overflow-x-hidden truncate pr-6', dynamicTextClassName)}
+        className={twMerge('block flex-1 overflow-x-hidden truncate pr-6', dynamicTextClassName, selection.length === 0 ? 'text-gray-500 dark:text-gray-400' : '')}
         skContainerClassName='flex-1'
         isPending={isPending}
       />

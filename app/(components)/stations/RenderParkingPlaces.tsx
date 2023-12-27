@@ -83,16 +83,15 @@ function RenderParkingPlace({ parkingPlace: { id, bike, allowedCategories } }: {
         </SelectComponent>
       </div>
 
-      {bike && (
-        <InputGroup
-          isPending={isPending}
-          name='parked bike'
-          data-result='string'
-          readOnly={true}
-          className='flex-1 rounded-md px-2 py-1 dark:bg-neutral-600/60 dark:text-gray-200'
-          defaultValue={bike._id}
-        />
-      )}
+      <InputGroup
+        key={id}
+        isPending={isPending}
+        name='Has Bike'
+        data-result='string'
+        readOnly={true}
+        className='flex-1 rounded-md px-2 py-1 focus:outline-none focus:ring-2 dark:bg-neutral-600/60 dark:text-gray-200 dark:focus:ring-blue-600/60'
+        defaultValue={bike?._id ?? 'No'}
+      />
     </div>
   )
 }

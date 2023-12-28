@@ -1,0 +1,64 @@
+.profilecard {
+    width: 350px;
+    margin: 20px;
+    border-radius: 4px;
+    padding-bottom: 20px;
+  }
+  
+  .gradiant {
+    background-image: linear-gradient(grey, white);
+    height: 125px;
+    border-radius: 4px 4px 0px 0px;
+  }
+  
+  .profile-down {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+  }
+  
+  .user-picture-container {
+    margin-top: -75px;
+    padding: 5px;
+    background: white;
+    border-radius: 50%;
+  }
+  
+  .user-picture {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    object-fit: cover; 
+  }
+  
+  .user-email {
+    font-size: 25px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+
+  .user-wallet {
+    font-size: 25px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+
+
+
+  .transfer-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 50px;
+    color:#fff;
+    background-color: #baadcd;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  

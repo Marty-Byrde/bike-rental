@@ -1,92 +1,99 @@
 'use client'
+import React, {useContext, useState} from 'react';
+import {TicketsContext} from "@/app/(components)/ticketContext/TicketsContex";
 
-import React from "react";
 
-export default function Ticket() {
+export default function Ticket({data, index}) {
+    const {tickets} = useContext(TicketsContext); // oder was auch immer Ihr Kontext bereitstellt
+    const lastTicket = tickets[tickets.length - 1]; // Beispiel, um das letzte Ticket zu bekommen
+    const {moveTicketToHistory, returnTicket} = useContext(TicketsContext);
+    const [finalizedPrice, setFinalizedPrice] = useState(data.price);
+    const [isPriceFinalized, setIsPriceFinalized] = useState(false);
+    const qrCodeData = `Ticket-ID: ${data.id}`;
+
+
+    const handleQRCodeClick = () => {
+        // Logik für das Klicken auf den QR-Code
+        moveTicketToHistory(index);
+        setIsPriceFinalized(true);
+        console.log("QR-Code geklickt!");
+    };
+
+    const handleReturnClick = () => {
+        returnTicket(index);
+    };
+
+    // Überprüfen, ob das Ticket ein zukünftiges Ticket ist
+    const isFutureTicket = () => {
+        const rentalStartTime = new Date(data.date + ' ' + data.time);
+        const currentTime = new Date();
+        return currentTime < rentalStartTime;
+    };
+
     return (
-        <main className="w-screen h-screen flex flex-col">
+        <main className="flex flex-col h-full">
             <section className="w-full flex-grow bg-blue flex items-center justify-center p-4">
-
                 <div className="flex w-full max-w-3xl text-zinc-900 h-64">
-                    {/* Linker Teil der Rückseite */}
-                    <div className="h-full py-8 px-10 bg-white flex-grow rounded-l-3xl flex flex-col">
-                        {/* Alle anderen Elemente und Inhalte der Rückseite */}
-                        {/* Weitere Elemente gekürzt für Übersichtlichkeit */}
-
+                    <div className="h-full py-8 px-10 bg-white flex-grow rounded-l-3xl flex flex-col justify-between">
+                        {/* Hier der obere Abschnitt (Station, Endstation, etc.) */}
                         <div className="flex items-center justify-between">
-                            <div>
-                                <h3 className="text-lg font-semibold">Startstation</h3>
-                            </div>
+                            <h3 className="text-lg font-semibold">Station: {data?.station}</h3>
                             {/* Pfeilsymbol */}
-                            <div>
-                                <svg className="h-6 w-6 text-zinc-900 mx-2" fill="none" strokeLinecap="round"
-                                     strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path d="M4 12h16m0 0l-4-4m4 4l-4 4"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-semibold">Endstation</h3>
-                            </div>
+                            <svg className="h-6 w-6 text-zinc-900 mx-2" fill="none" strokeLinecap="round"
+                                 strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M4 12h16m0 0l-4-4m4 4l-4 4"></path>
+                            </svg>
+                            <h3 className="text-lg font-semibold">Endstation</h3>
                         </div>
-
-                        {/* Fahrradart */}
-                        <div className="items-center justify-between mt-8">
-                            <h3 className="text-lg font-semibold">Fahrradart</h3>
+                        {/* Mittlerer Abschnitt für Kinder-Tickets */}
+                        <div className="grid grid-rows-3 h-full mt-4">
+                            {data?.isChildTicket && (
+                                <h3 className="text-lg font-semibold">Für Kinder</h3>
+                            )}
+                            <h3 className="text-lg font-semibold">Categorie: {data?.category}</h3>
+                            <h3 className="text-lg font-semibold">Fahrradtyp: {data?.bikeType}</h3>
                         </div>
-                        {/* Fahrradtyp */}
-                        <div>
-                            <h3 className="text-lg font-semibold">Fahrradtyp</h3>
-                        </div>
-                        {/* Datum, Zeit, Preis und Platz in derselben Reihe */}
-                        <div className="flex items-center justify-between mt-8">
-                            {/* Datum */}
-                            <div>
-                                <h3 className="text-lg font-semibold">Datum</h3>
-                                <p className="text-md">[Datum]</p>
+                        {/* Unterer Abschnitt für Datum, Zeit, Preis, Platz */}
+                        <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
+                            <div className="mb-2 sm:mb-0">
+                                <h3 className="text-lg font-semibold">Date</h3>
+                                <p className="text-md">{data?.date}</p>
                             </div>
-
-                            {/* Zeit */}
-                            <div>
-                                <h3 className="text-lg font-semibold">Zeit</h3>
-                                <p className="text-md">[Zeit]</p>
+                            <div className="mb-2 sm:mb-0">
+                                <h3 className="text-lg font-semibold">Time</h3>
+                                <p className="text-center text-md">{data?.time}</p>
                             </div>
-
-                            {/* Preis */}
-                            <div>
-                                <h3 className="text-lg font-semibold">Preis</h3>
-                                <p className="text-md">[Preis]</p>
+                            <div className="mb-2 sm:mb-0">
+                                <h3 className="text-lg font-semibold">Price</h3>
+                                <p className="text-center text-md">{finalizedPrice}€</p>
                             </div>
-
-                            {/* Platz */}
                             <div>
-                                <h3 className="text-lg font-semibold">Platz</h3>
-                                <p className="text-md">[Platz]</p>
+                                <h3 className="text-lg font-semibold">Place</h3>
+                                <p className="text-center text-md">{data?.place}</p>
                             </div>
                         </div>
                     </div>
-
-                    {/* Trennlinie */}
                     <div
                         className="relative h-full flex flex-col items-center border-dashed justify-between border-2 bg-white border-zinc-900">
                         <div className="absolute rounded-full w-8 h-8 bg-zinc-900 -top-5"></div>
                         <div className="absolute rounded-full w-8 h-8 bg-zinc-900 -bottom-5"></div>
                     </div>
-
-                    {/* Rechter Teil der Rückseite */}
                     <div className="h-full bg-white flex items-center justify-center px-8 rounded-r-3xl">
-                        {/*QR-Code */}
-                        <div className="qr-code-placeholder flex justify-center items-center">
-                            <div className="w-32 h-32 bg-gray-300 flex items-center justify-center text-gray-600">
-                                QR-Code
+                        <button onClick={handleQRCodeClick}
+                                className="qr-code-placeholder flex justify-center items-center">
+                            <div
+                                className="w-32 h-32 bg-gray-300 flex items-center justify-center px-8 rounded">QRCode
+                                {//<QRCode value={qrCodeData} size={128}/>
+                                }
                             </div>
-                        </div>
-                        {/* SVG-Logo oder Bild hier einfügen */}
-                        {/* SVG-Code gekürzt für Übersichtlichkeit */}
+                        </button>
                     </div>
-
                 </div>
             </section>
+            {isFutureTicket() && (
+                <button onClick={handleReturnClick} className="bg-red-500 text-white px-4 py-2 rounded">Ticket
+                    zurückgeben</button>
+            )}
         </main>
-        // Hier endet die Haupt-Container-Komponente
     );
 }

@@ -18,7 +18,93 @@ export default function BikeBookingPage() {
 
     const {addTicket} = useContext(TicketsContext);
 
-    
+    const handleNumberOfChildrenChange = (e) => {
+        const count = parseInt(e.target.value, 10);
+        setNumberOfChildren(count);
+        setChildrenDetails(Array(count).fill({model: '', size: 'Standard', category: 'City-Bike'}));
+    };
+
+    const handleChildDetailChange = (index, key, value) => {
+        const updatedDetails = childrenDetails.map((child, i) => {
+            if (i === index) {
+                return {...child, [key]: value};
+            }
+            return child;
+        });
+        setChildrenDetails(updatedDetails);
+    };
+
+    const updateRentingTime = (option) => {
+        setRentingOption(option);
+        if (option === 'immediate') {
+            const now = new Date();
+            const dateStr = now.toISOString().split('T')[0];
+            const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
+            setRentingTime(`${dateStr}T${timeStr}`);
+        }
+    };
+
+    // Preisberechnungsfunktion
+    const calculatePrice = (model, category, date, time, station) => {
+        let price = 10.00; // Basispreis
+
+        if (model === "Mountainbike") price += 5.00;
+        if (category === "High-End") price += 10.00;
+        if (station === "Stadtzentrum") price += 3.00;
+
+        // Berechnung der Dauer in Stunden
+        let duration = 1; // Standarddauer
+        if (rentingOption === 'future') {
+            const rentalStart = new Date(date + ' ' + time);
+            const rentalEnd = new Date(rentalStart.getTime() + 60 * 60 * 1000); // +1 Stunde
+            duration = (rentalEnd - rentalStart) / (1000 * 60 * 60);
+        }
+
+        price *= duration; // Preis basierend auf Dauer anpassen
+        return price.toFixed(2);
+    };
+
+    const handleBooking = () => {
+        let bookingDate, bookingTime;
+        if (rentingOption === 'immediate') {
+            const now = new Date();
+            bookingDate = now.toISOString().split('T')[0];
+            bookingTime = now.toTimeString().split(' ')[0].substr(0, 5);
+        } else {
+            [bookingDate, bookingTime] = rentingTime.split('T');
+        }
+        if (model === "Kinderfahrrad" && !adultTicket) {
+            alert("Kinderfahrradtickets können nur zusammen mit einem Erwachsenenticket gebucht werden.");
+            return;
+        }
+        const price = calculatePrice(model, category, bookingDate, bookingTime, station);
+
+        const newTicket = {
+            station,
+            category,
+            bikeType: model,
+            date: bookingDate,
+            time: bookingTime,
+            price,
+            place: "3"
+        };
+        addTicket(newTicket);
+
+        childrenDetails.forEach(child => {
+            const childPrice = (calculatePrice(child.model, child.category, bookingDate, bookingTime, station) * 0.5).toFixed(2);
+            const childTicket = {
+                ...newTicket, // Grundlegende Ticketinformationen
+                category: child.category,
+                bikeType: child.model,
+                size: child.size,
+                price: childPrice,
+                isChildTicket: true
+            };
+            addTicket(childTicket);
+        });
+    };
+
+
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold mb-6">Fahrrad-Tickets buchen</h1>

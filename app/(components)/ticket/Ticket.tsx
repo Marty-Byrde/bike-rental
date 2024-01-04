@@ -1,5 +1,5 @@
 'use client'
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {TicketsContext} from "@/app/(components)/ticketContext/TicketsContex";
 
 
@@ -11,6 +11,23 @@ export default function Ticket({data, index}) {
     const [isPriceFinalized, setIsPriceFinalized] = useState(false);
     const qrCodeData = `Ticket-ID: ${data.id}`;
 
+    useEffect(() => {
+        let interval = setInterval(null);
+        if (!isPriceFinalized) {
+            interval = setInterval(() => {
+                const now = new Date();
+                const rentalStart = new Date(data.date + ' ' + data.time);
+                let minutesPassed = Math.floor((now - rentalStart) / 60000);
+                minutesPassed = Math.max(minutesPassed, 0); // Verhindert negative Werte
+                const newPrice = (parseFloat(data.price) + 0.10 * minutesPassed).toFixed(2);
+                setFinalizedPrice(newPrice);
+            }, 60000); // Aktualisiert den Preis jede Minute
+
+            return () => clearInterval(interval);
+        } else {
+            //  clearInterval(interval);
+        }
+    }, [isPriceFinalized, data]);
 
     const handleQRCodeClick = () => {
         // Logik für das Klicken auf den QR-Code

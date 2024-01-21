@@ -1,53 +1,58 @@
-'use client'
-import { BuildingLibraryIcon, CursorArrowRaysIcon, FolderIcon, HomeIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
 import { SideElementProps } from '@/app/(components)/root/NavigationBar/SideElement'
-import Profile_Dummy from '@/public/Icons/DummyAvatar.jpg'
-import MobileSidebar from '@/app/(components)/root/NavigationBar/MobileSidebar'
 import DesktopSidebar from '@/app/(components)/root/NavigationBar/DesktopSidebar'
-import { StaticImageData } from 'next/image'
+import MobileSidebar from '@/app/(components)/root/NavigationBar/MobileSidebar'
+import getSessionData from '@/lib/Shared/getSessionData'
 
-export interface SidebarProps {
-  elements: SideElementProps[]
-  user?: {
-    name: string
-    image: StaticImageData | string
-  }
-}
+export default async function SideBar() {
+  const { data } = await getSessionData()
 
-const SidebarProps: SidebarProps = {
-  elements: [
-    { name: 'Home', icon: HomeIcon, href: '/' },
+  const elements: SideElementProps[] = [
+    { name: 'Home', icon: 'HomeIcon', href: '/' },
     {
       name: 'Browse',
-      icon: FolderIcon,
+      icon: 'FolderIcon',
       subitems: [
         {
           name: 'Rental Shops',
           href: '/stations/',
-          icon: BuildingLibraryIcon,
+          icon: 'BuildingStoreFrontIcon',
           badge: 15,
         },
         {
           name: 'Available Bikes',
           href: '/bikes/',
-          icon: ShoppingBagIcon,
+          icon: 'ShoppingBagIcon',
           badge: 45,
         },
       ],
     },
-    { name: 'Book Tickets', icon: CursorArrowRaysIcon, href: '/tickets' },
-  ],
-  user: {
-    name: 'Max Mustermann',
-    image: Profile_Dummy,
-  },
-}
+    { name: 'Book Tickets', icon: 'CursorArrowRaysIcon', href: '/tickets' },
+  ]
+  const managementElements: SideElementProps[] = [
+    {
+      icon: 'LockOpenIcon',
+      name: 'Management',
+      subitems: [
+        {
+          icon: 'AdjustmentsVerticalIcon',
+          name: 'Manage Stations',
+          href: '/management/stations',
+        },
+        {
+          icon: 'AdjustmentsVerticalIcon',
+          name: 'Manage Bikes',
+          href: '/management/bikes',
+        },
+      ],
+    },
+  ]
 
-export default function SideBar() {
+  if (data?.managementAccess) elements.push(...managementElements)
+
   return (
     <>
-      <MobileSidebar {...SidebarProps} />
-      <DesktopSidebar {...SidebarProps} />
+      <MobileSidebar elements={elements} />
+      <DesktopSidebar elements={elements} />
     </>
   )
 }

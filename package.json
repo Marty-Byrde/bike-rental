@@ -3,26 +3,31 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 80 --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^2.0.10",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "mongodb": "^6.3.0",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
     "nookies": "^2.5.2",
+    "qrcode.react": "^3.1.0",
     "react": "^18",
     "react-dom": "^18",
     "sharp": "^0.33.0",
-    "tailwind-merge": "^2.1.0"
+    "tailwind-merge": "^2.1.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.7",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",

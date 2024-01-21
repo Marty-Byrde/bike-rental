@@ -4,11 +4,12 @@ import { twMerge } from 'tailwind-merge'
 import { Disclosure, Transition } from '@headlessui/react'
 import structureClasses from '@/lib/Shared/structureClasses'
 import Link from 'next/link'
+import useIcon, { useIconProps } from '@/lib/Shared/useIcon'
 
 export interface SideElementProps {
   name: string
   href?: string
-  icon?: any
+  icon?: useIconProps['iconName']
   isOpen?: boolean
   subitems?: SideElementProps[] | any[]
   badge?: number
@@ -65,7 +66,9 @@ export default function SideElement(element: SideElementProps) {
  * @param isOpen The state that indicates whether the element's subitems are to be displyed, thus the category is opened.
  * @constructor
  */
-function BasicElement({ name, icon: Icon, subitems, isOpen, badge }: SideElementProps) {
+function BasicElement({ name, icon: iconName, subitems, isOpen, badge }: SideElementProps) {
+  const Icon = useIcon(iconName)
+
   const imgClasses = structureClasses(
     isOpen ? 'text-indigo-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 dark:group-hover:stroke-blue-400 group-hover:text-indigo-600',
     'h-6 w-6 shrink-0',
@@ -73,7 +76,7 @@ function BasicElement({ name, icon: Icon, subitems, isOpen, badge }: SideElement
 
   return (
     <>
-      {Icon && <Icon key={name + isOpen} className={imgClasses} aria-hidden='true' />}
+      <Icon key={name + isOpen} className={imgClasses} />
       <span className={twMerge('text-sm leading-6 text-gray-600 group-hover:text-indigo-600 dark:text-gray-300 dark:group-hover:text-blue-400', isOpen ? 'text-indigo-600 dark:text-blue-400' : '')}>
         {name}
       </span>

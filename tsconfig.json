@@ -27,6 +27,7 @@
       "@/typings/*": ["./typings/*"],
       "@/actions/*": ["./actions/*"],
       "@/public/*": ["./public/*"],
+      "@/svgs/*": ["./svgs/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

@@ -1,16 +1,16 @@
 'use client'
-import { ParkingPlace } from '@/typings/Bike'
-import { useEffect, useState } from 'react'
-import Ticket from '@/typings/Ticket'
 import RenderBikeModel from '@/app/(components)/bikeModel/RenderBikeModel'
 import createTicket from '@/lib/tickets/TicketCalculation'
+import { ParkingPlace } from '@/typings/Bike'
+import Ticket from '@/typings/Ticket'
+import { useEffect, useState } from 'react'
 
 export default function RenderParkingPlaceTickets({ parkingPlace }: { parkingPlace: ParkingPlace }) {
   const defaultStart = new Date(Date.now())
   const defaultEnd = new Date(Date.now())
   defaultEnd.setHours(defaultEnd.getHours() + 1)
 
-  const [interval, setInterval] = useState<Ticket['interval']>({ start: defaultStart, end: defaultEnd })
+  const [interval, setInterval] = useState<Ticket['interval']>({ start: defaultStart, end: defaultEnd, })
   const [ticket, setTicket] = useState<Ticket | undefined>(undefined)
 
   useEffect(() => {
@@ -19,6 +19,8 @@ export default function RenderParkingPlaceTickets({ parkingPlace }: { parkingPla
 
     const ticket = createTicket(parkingPlace.bike!, interval.start, interval.end)
     setTicket(ticket)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interval])
 
   return (
@@ -57,7 +59,7 @@ export default function RenderParkingPlaceTickets({ parkingPlace }: { parkingPla
                 setInterval((prev) => {
                   if (!e.target.valueAsDate) return prev
 
-                  return { ...prev, start: e.target.valueAsDate }
+                  return { ...prev, end: e.target.valueAsDate }
                 })
               }
               type='datetime-local'
@@ -73,7 +75,7 @@ export default function RenderParkingPlaceTickets({ parkingPlace }: { parkingPla
               <span>{ticket.price}€</span>
             </div>
 
-            <button formAction={() => {}} className='mt-4 rounded-md bg-blue-800/50 px-2 py-1 uppercase tracking-wide text-gray-100 dark:bg-blue-400/50 dark:text-gray-200'>
+            <button formAction={() => { }} className='mt-4 rounded-md bg-blue-800/50 px-2 py-1 uppercase tracking-wide text-gray-100 dark:bg-blue-400/50 dark:text-gray-200'>
               Book Ticket
             </button>
           </form>

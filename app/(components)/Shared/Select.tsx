@@ -1,12 +1,12 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { DynamicText } from '@/app/(components)/Shared/Responsive/DynamicText'
+import structureClasses from '@/lib/Shared/structureClasses'
+import ReactState from '@/typings/ReactState'
 import { Transition } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import ReactState from '@/typings/ReactState'
 import { CheckIcon } from '@heroicons/react/24/solid'
-import structureClasses from '@/lib/Shared/structureClasses'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { DynamicText } from '@/app/(components)/Shared/Responsive/DynamicText'
 
 const SelectComponentContext = createContext({})
 
@@ -60,6 +60,8 @@ export function SelectComponent({
       setInitialRender(true) //* so that there is no endless loop because of state-change.
       setSelection(setToPreselect ? preSelected ?? [] : [])
     })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selection])
 
   return (
@@ -157,6 +159,8 @@ SelectComponent.ModalOptions = ({ value, className }: { className?: string; valu
 
     //? Deselect all the other options that were previsouly selected (since only option can be selected (multiSelect: false)
     if (selection?.at(0) !== value) setSelected(false)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selection])
 
   return (

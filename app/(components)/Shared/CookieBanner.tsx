@@ -1,7 +1,7 @@
 'use client'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
-import { twMerge } from 'tailwind-merge'
 import { useEffect, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 export default function CookieBanner({ permission }: { permission: boolean }) {
   const [acceptance, setAcceptance] = useState<'yes' | 'no' | undefined>()
@@ -27,6 +27,8 @@ export default function CookieBanner({ permission }: { permission: boolean }) {
     }
 
     if (permission) setAcceptance('yes')
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acceptance])
 
   return (

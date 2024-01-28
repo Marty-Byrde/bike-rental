@@ -1,9 +1,9 @@
-import { WithId } from 'mongodb'
-import Station from '@/typings/Station'
 import RenderStation from '@/app/(components)/stations/RenderStation'
+import Station from '@/typings/Station'
+import { WithId } from 'mongodb'
 
 export default async function StationsPage() {
-  const stations: WithId<Station>[] = await fetch('http://localhost/api/stations', { cache: 'no-cache', next: { tags: ['manage-stations'] } }).then((res) => res.json())
+  const stations: WithId<Station>[] = await fetch(`${process.env.NEXTAUTH_URL}/api/stations`, { cache: 'no-cache', next: { tags: ['manage-stations'] } }).then((res) => res.json())
 
   return (
     <>

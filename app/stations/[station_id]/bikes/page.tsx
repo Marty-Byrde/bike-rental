@@ -1,5 +1,7 @@
 import AvailableStationBikes from '@/app/(components)/stations/book/AvailableStationBikes'
 import { getStation } from '@/lib/station/StationDAO'
+import { ParkingPlace } from '@/typings/Bike'
+import Ticket from '@/typings/Ticket'
 import { notFound } from 'next/navigation'
 
 interface SearchParams {
@@ -10,9 +12,13 @@ interface SearchParams {
 
 export default async function StationBikesPage({ params: { station_id } }: SearchParams) {
   const station = await getStation(station_id)
+  const tickets = await fetch(`${process.env.NEXTAUTH_URL}/api/tickets`).then((res) => res.json()).then(data => data as Ticket[])
+
   if (!station) notFound()
 
-  const usedParkingPlaces = station.address.parkingPlaces?.filter((pp) => !!pp.bike)
+  const notYetRented = (parkingPlace: ParkingPlace) => !tickets.find(t => !!t.bikes.find(b => b._id.toString() === parkingPlace.bike!._id.toString()))
+  const usedParkingPlaces = station.address.parkingPlaces?.filter((pp) => !!pp.bike && notYetRented(pp))
+
   if (!usedParkingPlaces || usedParkingPlaces.length === 0) {
     return (
       <div>

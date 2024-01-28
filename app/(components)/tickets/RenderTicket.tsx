@@ -6,8 +6,8 @@ import RenderSimpleBike from './RenderSimpleBike'
 
 export default function RenderTicket({ ticket }: { ticket: WithId<Ticket>; editable?: boolean; isPending?: boolean }) {
   return (
-    <form className='relative max-w-2xl rounded-md p-3 dark:bg-neutral-700/40'>
-      <h2 className='border-b pb-2 text-xl font-semibold dark:border-b-neutral-600'>
+    <form className='relative max-w-2xl rounded-md bg-neutral-200/80 p-3 dark:bg-neutral-700/40'>
+      <h2 className='border-b border-b-neutral-400 pb-2 text-xl font-semibold dark:border-b-neutral-600'>
         Ticket - <span className='text-sm font-normal'>{ticket._id.toString()}</span>
       </h2>
 
@@ -21,7 +21,7 @@ export default function RenderTicket({ ticket }: { ticket: WithId<Ticket>; edita
         <div className='mt-2 flex flex-col gap-2'>
           <div className='flex flex-wrap gap-6 px-4'>
             {ticket.bikes.map((bike) => (
-              <RenderSimpleBike className='rounded-md p-4 dark:bg-neutral-700/80 ' key={bike._id.toString()} bike={bike} ignoredModelProps={['_id', 'reviews', 'name']} />
+              <RenderSimpleBike className='rounded-md bg-neutral-300/60 p-4 dark:bg-neutral-700/80 ' key={bike._id.toString()} bike={bike} ignoredModelProps={['_id', 'reviews', 'name']} />
             ))}
           </div>
         </div>
@@ -32,7 +32,7 @@ export default function RenderTicket({ ticket }: { ticket: WithId<Ticket>; edita
         </div>
       </div>
 
-      <button formAction={() => CancelTicketAction(ticket)} className='absolute bottom-3 right-3 mt-2 rounded-md px-2 py-1 text-sm dark:bg-red-600/70'>
+      <button formAction={() => CancelTicketAction(ticket)} className='absolute bottom-3 right-3 mt-2 rounded-md bg-red-400/70 px-2 py-1 text-sm text-gray-700 dark:bg-red-600/70 dark:text-gray-200'>
         Cancel Ticket
       </button>
     </form>

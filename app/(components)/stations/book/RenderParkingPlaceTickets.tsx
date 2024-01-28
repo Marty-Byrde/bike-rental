@@ -1,6 +1,6 @@
 'use client'
 import RenderBikeModel from '@/app/(components)/bikeModel/RenderBikeModel'
-import createTicket from '@/lib/tickets/TicketCalculation'
+import calculateTicket from '@/lib/tickets/TicketCalculation'
 import { ParkingPlace } from '@/typings/Bike'
 import Ticket from '@/typings/Ticket'
 import { useEffect, useState } from 'react'
@@ -17,8 +17,8 @@ export default function RenderParkingPlaceTickets({ parkingPlace }: { parkingPla
     if (!interval) return setTicket(undefined)
     if (!interval.start || !interval.end) return setTicket(undefined)
 
-    const ticket = createTicket(parkingPlace.bike!, interval.start, interval.end)
-    setTicket(ticket)
+    const price = calculateTicket(parkingPlace.bike!, interval.start, interval.end)
+    setTicket({ bikes: [parkingPlace.bike!], interval, price })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interval])

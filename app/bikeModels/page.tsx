@@ -1,9 +1,9 @@
-import { WithId } from 'mongodb'
-import { BikeModel } from '@/typings/Bike'
 import RenderBikeModel from '@/app/(components)/bikeModel/RenderBikeModel'
+import { BikeModel } from '@/typings/Bike'
+import { WithId } from 'mongodb'
 
 export default async function BikeModelsPage() {
-  const bikeModels: WithId<BikeModel>[] = await fetch('http://localhost/api/bikeModels', { cache: 'no-cache', next: { tags: ['manage-bikeModels'] } }).then((res) => res.json())
+  const bikeModels: WithId<BikeModel>[] = await fetch(`${process.env.NEXTAUTH_URL}/api/bikeModels`, { cache: 'no-cache', next: { tags: ['manage-bikeModels'] } }).then((res) => res.json())
 
   return (
     <>

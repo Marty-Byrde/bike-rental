@@ -1,12 +1,12 @@
-import { WithId } from 'mongodb'
-import { Bike, BikeModel } from '@/typings/Bike'
 import RenderBike from '@/app/(components)/bike/RenderBike'
+import { Bike, BikeModel } from '@/typings/Bike'
 import Station from '@/typings/Station'
+import { WithId } from 'mongodb'
 
 export default async function BikesPage() {
-  const bikes: WithId<Bike>[] = await fetch('http://localhost/api/bikes', { cache: 'no-cache', next: { tags: ['manage-bikes', 'manage-bikeModels'] } }).then((res) => res.json())
-  const bikeModels: WithId<BikeModel>[] = await fetch('http://localhost/api/bikeModels', { cache: 'no-cache', next: { tags: ['manage-bikeModels'] } }).then((res) => res.json())
-  const stations: WithId<Station>[] = await fetch('http://localhost/api/stations', { cache: 'no-cache', next: { tags: ['manage-stations'] } }).then((res) => res.json())
+  const bikes: WithId<Bike>[] = await fetch(`${process.env.NEXTAUTH_URL}api/bikes`, { cache: 'no-cache', next: { tags: ['manage-bikes', 'manage-bikeModels'] } }).then((res) => res.json())
+  const bikeModels: WithId<BikeModel>[] = await fetch(`${process.env.NEXTAUTH_URL}api/bikeModels`, { cache: 'no-cache', next: { tags: ['manage-bikeModels'] } }).then((res) => res.json())
+  const stations: WithId<Station>[] = await fetch(`${process.env.NEXTAUTH_URL}/api/stations`, { cache: 'no-cache', next: { tags: ['manage-stations'] } }).then((res) => res.json())
 
   return (
     <>

@@ -12,7 +12,7 @@ interface SearchParams {
 
 export default async function StationBikesPage({ params: { station_id } }: SearchParams) {
   const station = await getStation(station_id)
-  const tickets = await fetch(`${process.env.NEXTAUTH_URL}/api/tickets`).then((res) => res.json()).then(data => data as Ticket[])
+  const tickets = await fetch(`${process.env.NEXTAUTH_URL}/api/tickets`, { next: { tags: ['tickets'] } }).then((res) => res.json()).then(data => data as Ticket[])
 
   if (!station) notFound()
 

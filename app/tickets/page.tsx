@@ -11,6 +11,8 @@ export default async function TicketsPage() {
         {tickets.map((ticket) => (
           <RenderTicket ticket={ticket} key={ticket._id.toString()} />
         ))}
+
+        {tickets.length === 0 && <div className='text-base'>No tickets booked.</div>}
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
-import { SideElementProps } from '@/app/(components)/root/NavigationBar/SideElement'
 import DesktopSidebar from '@/app/(components)/root/NavigationBar/DesktopSidebar'
 import MobileSidebar from '@/app/(components)/root/NavigationBar/MobileSidebar'
+import { SideElementProps } from '@/app/(components)/root/NavigationBar/SideElement'
 import getSessionData from '@/lib/Shared/getSessionData'
 
 export default async function SideBar() {
@@ -26,7 +26,7 @@ export default async function SideBar() {
         },
       ],
     },
-    { name: 'Book Tickets', icon: 'CursorArrowRaysIcon', href: '/tickets' },
+    { name: 'Booked Tickets', icon: 'CursorArrowRaysIcon', href: '/tickets' },
   ]
   const managementElements: SideElementProps[] = [
     {

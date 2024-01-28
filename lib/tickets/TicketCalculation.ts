@@ -3,7 +3,7 @@ import { Bike, BikeBreakType, BikeCategory } from '@/typings/Bike'
 export default function calculateTicket(bike: Bike, start: Date, end: Date): number {
   const price = parseFloat(((10 + getHoursRented(start, end) * 5) * getModelFactor(bike.model.category) * getBreaksFactor(bike.model.brakeType)).toFixed(2))
 
-  return price
+  return +price.toFixed(2)
 }
 
 function getModelFactor(model: BikeCategory['name']) {

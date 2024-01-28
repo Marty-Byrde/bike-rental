@@ -1,6 +1,6 @@
+import AvailableStationBikes from '@/app/(components)/stations/book/AvailableStationBikes'
 import { getStation } from '@/lib/station/StationDAO'
 import { notFound } from 'next/navigation'
-import RenderParkingPlaceTickets from '@/app/(components)/stations/book/RenderParkingPlaceTickets'
 
 interface SearchParams {
   params: {
@@ -22,10 +22,5 @@ export default async function StationBikesPage({ params: { station_id } }: Searc
     )
   }
 
-  return (
-    <div>
-      <h1 className='mb-8 text-center text-3xl font-semibold lg:text-left'>Bikes of {station.name}</h1>
-      <div className='flex gap-4'>{usedParkingPlaces?.map((up) => <RenderParkingPlaceTickets key={up.id} parkingPlace={up} />)}</div>
-    </div>
-  )
+  return <AvailableStationBikes station={station} />
 }

@@ -3,6 +3,7 @@ import calculateTicket from "@/lib/tickets/TicketCalculation";
 import Ticket from "@/typings/Ticket";
 import { twMerge } from "tailwind-merge";
 import { useAvailableStationBikesContext } from "./AvailableStationBikes";
+import TimeSelection from "./TimeSelection";
 
 export default function BookingCheckout() {
   const { selection, interval } = useAvailableStationBikesContext()
@@ -50,9 +51,10 @@ export default function BookingCheckout() {
         <dl className='space-y-2 px-2'>
           {invoicePositions.map(pos => <PricingLine key={pos.label} label={pos.label} price={pos.price} />)}
         </dl>
-
-
       </div>
+
+      <TimeSelection />
+
       <div className="justify-self-end pt-6 flex flex-col gap-8 border-t border-dashed dark:border-t-neutral-600">
 
         <dl className='space-y-2 px-2'>

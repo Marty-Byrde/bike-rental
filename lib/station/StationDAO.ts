@@ -35,3 +35,9 @@ export async function updateStation(id: string | ObjectId, update: WithId<Statio
   const collection = await getCollection(COLLECTION_STATIONS!)
   await collection.updateOne({ _id: new ObjectId(id.toString()) }, { $set: update })
 }
+
+export async function getStation(id: string) {
+  const collection = await getCollection(COLLECTION_STATIONS!)
+  const station = (await collection.findOne({ _id: new ObjectId(id) })) as WithId<Station> | null
+  return station
+}

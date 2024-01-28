@@ -11,6 +11,7 @@ import { DynamicText } from '@/app/(components)/Shared/Responsive/DynamicText'
 import Rating from '@/app/(components)/Shared/Rating'
 import ReactState from '@/typings/ReactState'
 import RenderParkingPlaces from '@/app/(components)/stations/RenderParkingPlaces'
+import Link from 'next/link'
 
 interface RenderStationContextProps {
   initialStation: WithId<Station>
@@ -71,22 +72,43 @@ export default function RenderStation({ station: initialStation, editable, isPen
           <RenderParkingPlaces />
         </div>
 
-        <form>
-          <ActionButtons />
+        <form className='flex justify-end gap-2 '>
+          <RegularActionButtons />
+          <ManagementActionButtons />
         </form>
       </div>
     </RenderStationContext.Provider>
   )
 }
 
-function ActionButtons() {
+function RegularActionButtons() {
+  const { station, isPending } = useContext(RenderStationContext)
+
+  if (isPending) {
+    return (
+      <div className='flex h-8 w-[120px] items-center justify-center gap-2 rounded-md bg-gray-800/50 px-2 py-1 capitalize tracking-wide text-gray-100 dark:bg-gray-400/50 dark:text-gray-200'>
+        <DynamicText content='' skeletonClassName='flex-1 dark:bg-gray-400' skWidth='w-24' isPending />
+      </div>
+    )
+  }
+
+  return (
+    <div className='flex justify-end gap-2'>
+      <Link href={`/stations/${station._id.toString()}/bikes`} className='rounded-md bg-gray-800/50 px-2 py-1 capitalize tracking-wide text-gray-100 dark:bg-gray-400/50 dark:text-gray-200'>
+        Check Available Bikes
+      </Link>
+    </div>
+  )
+}
+
+function ManagementActionButtons() {
   const { initialStation, station, isPending, editable: visible } = useContext(RenderStationContext)
 
   if (!visible) return null
 
   if (isPending) {
     return (
-      <div className='mt-4 flex h-8 justify-end gap-2'>
+      <div className='flex h-8 justify-end gap-2'>
         <div className='flex w-[80px] items-center justify-center rounded-md bg-blue-800/50 px-2 py-1 uppercase tracking-wide text-gray-100 dark:bg-blue-400/50 dark:text-gray-200'>
           <DynamicText content='' skeletonClassName='flex-1 dark:bg-gray-400' skWidth='w-14' isPending />
         </div>
@@ -99,7 +121,7 @@ function ActionButtons() {
   }
 
   return (
-    <div className='mt-4 flex justify-end gap-2'>
+    <div className='flex justify-end gap-2'>
       <button
         className='rounded-md bg-blue-800/50 px-2 py-1 uppercase tracking-wide text-gray-100 dark:bg-blue-400/50 dark:text-gray-200'
         formAction={() => UpdateStationAction(initialStation._id, station)}>

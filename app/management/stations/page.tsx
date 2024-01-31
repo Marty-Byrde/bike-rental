@@ -3,7 +3,7 @@ import Station from '@/typings/Station'
 import { WithId } from 'mongodb'
 
 export default async function ManagementStationsPage() {
-  const stations: WithId<Station>[] = await fetch(`${process.env.NEXTAUTH_URL}/api/stations`, { cache: 'no-cache', next: { tags: ['manage-stations'] } }).then((res) => res.json())
+  const stations: WithId<Station>[] = await fetch(`${process.env.BACKEND}/stations`, { cache: 'no-cache', next: { tags: ['manage-stations'] } }).then((res) => res.json())
 
   return (
     <>

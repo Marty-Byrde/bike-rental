@@ -3,7 +3,7 @@ import { BikeModel } from '@/typings/Bike'
 import { WithId } from 'mongodb'
 
 export default async function ManagementBikeModelsPage() {
-  const bikes: WithId<BikeModel>[] = await fetch(`${process.env.NEXTAUTH_URL}/api/bikeModels`, { cache: 'no-cache', next: { tags: ['manage-bikeModels'] } }).then((res) => res.json())
+  const bikes: WithId<BikeModel>[] = await fetch(`${process.env.BACKEND}/bikeModels`, { cache: 'no-cache', next: { tags: ['manage-bikeModels'] } }).then((res) => res.json())
 
   return (
     <>

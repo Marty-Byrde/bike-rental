@@ -12,11 +12,13 @@ interface SearchParams {
 
 export default async function StationBikesPage({ params: { station_id } }: SearchParams) {
   const station = await getStation(station_id)
-  const tickets = await fetch(`${process.env.NEXTAUTH_URL}/api/tickets`, { next: { tags: ['tickets'] } }).then((res) => res.json()).then(data => data as Ticket[])
+  const tickets = await fetch(`${process.env.BACKEND}/tickets`, { next: { tags: ['tickets'] } })
+    .then((res) => res.json())
+    .then((data) => data as Ticket[])
 
   if (!station) notFound()
 
-  const notYetRented = (parkingPlace: ParkingPlace) => !tickets.find(t => !!t.bikes.find(b => b._id.toString() === parkingPlace.bike!._id.toString()))
+  const notYetRented = (parkingPlace: ParkingPlace) => !tickets.find((t) => !!t.bikes.find((b) => b._id.toString() === parkingPlace.bike!._id.toString()))
   const usedParkingPlaces = station.address.parkingPlaces?.filter((pp) => !!pp.bike && notYetRented(pp))
 
   if (!usedParkingPlaces || usedParkingPlaces.length === 0) {

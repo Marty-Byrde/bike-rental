@@ -31,7 +31,7 @@ export function useAvailableStationBikesContext() {
 }
 
 export default function AvailableStationBikes({ station }: { station: Station }) {
-	const [selection, setSelection] = useState<ParkingPlace[]>([station.address.parkingPlaces.at(0)!])
+	const [selection, setSelection] = useState<ParkingPlace[]>([])
 	const [interval, setInterval] = useState<{ start: Date; end: Date }>({ start: new Date(Date.now()), end: new Date(Date.now()) })
 
 	//* Get all parking places that are occupied

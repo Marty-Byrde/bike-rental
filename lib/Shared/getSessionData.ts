@@ -5,6 +5,7 @@ import { WithId } from 'mongodb'
 
 export interface SessionData extends User {
   managementAccess?: boolean
+  balance?: number
 }
 
 export default async function getSessionData() {
